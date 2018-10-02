@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1537794916 source:c:\users\odran\documents\c_c++\test.projet\main.cpp
+	<iostream>
+	<string>
+	<vector>
+
