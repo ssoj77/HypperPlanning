@@ -48,40 +48,22 @@ administrationWindows::administrationWindows(QWidget *parent, QStackedLayout *mo
     telephone->setPlaceholderText("N° de téléphone");
     layoutMembre->addWidget(telephone);
 
+    eleveTest = new QCheckBox("Le membre à ajouter est-il un eleve ?");
+    layoutMembre->addWidget(eleveTest);
+    QObject::connect(eleveTest, SIGNAL(stateChanged(int)), this, SLOT(afficheElementSupp(int)));
+    groupeLabel = new QLabel("Veuillez selectionner son groupe  :");
+    layoutMembre->addWidget(groupeLabel);
 
-    QGroupBox *membreSpeciaux = new QGroupBox(tr("Champs spéciaux :"));
-    QGridLayout *layoutMembreSpeciaux = new QGridLayout;
-    membreSpeciaux->setLayout(layoutMembreSpeciaux);
-
-    typeMembre = new QComboBox;
-    typeMembre->addItem("Eleve");
-    typeMembre->addItem("Formateur");
-    typeMembre->addItem("Administrateur");
-    layoutMembreSpeciaux->addWidget(typeMembre, 0, 0);
-    QObject::connect(typeMembre, SIGNAL(currentIndexChanged(int)), this, SLOT(afficheElementSupp(int)));
-
-    groupeLabel = new QLabel("Pour les eleves :");
-    layoutMembreSpeciaux->addWidget(groupeLabel, 1, 0);
     groupeCombo = new QComboBox;
     groupeCombo->addItem("Groupe A");
     groupeCombo->addItem("Groupe B");
-    layoutMembreSpeciaux->addWidget(groupeCombo, 2, 0);
-
-    formateurLabel = new QLabel("Pour les formateurs :");
-    formateurLabel->setDisabled(true);
-    layoutMembreSpeciaux->addWidget(formateurLabel, 1, 1);
-    job = new QLineEdit;
-    job->setPlaceholderText("Job");
-    job->setDisabled(true);
-    layoutMembreSpeciaux->addWidget(job, 2, 1);
-
-    layoutMembre->addWidget(membreSpeciaux);
-
-
+    layoutMembre->addWidget(groupeCombo);
 
     ajoutMembre = new QPushButton("Ajouter");
     layoutMembre->addWidget(ajoutMembre);
     QObject::connect(ajoutMembre, SIGNAL(clicked()), this, SLOT(ajouterMembre()));
+    groupeCombo->setDisabled(true);
+    groupeLabel->setDisabled(true);
 
     membre->setLayout(layoutMembre);
 
@@ -125,14 +107,27 @@ administrationWindows::administrationWindows(QWidget *parent, QStackedLayout *mo
     layoutCours->addWidget(ajoutCours);
     cours->setLayout(layoutCours);
 
-    //Gestion des matières
+    //Gestion des groupes
+    QGroupBox *groupeBox = new QGroupBox(tr("Créer un nouveau groupe"));
+    QVBoxLayout *layoutGroupe = new QVBoxLayout;
+    groupeBox->setLayout(layoutGroupe);
 
-    layoutMain->addWidget(membre, 0, 0);
-    layoutMain->addWidget(cours, 0, 1);
+    groupeIntitule = new QLineEdit;
+    groupeIntitule->setPlaceholderText("Intitule du groupe");
+    layoutGroupe->addWidget(groupeIntitule);
+
+    ajoutGroupe = new QPushButton("Ajouter");
+    QObject::connect(ajoutGroupe, SIGNAL(clicked()), this, SLOT(ajouterGroupe()));
+    layoutGroupe->addWidget(ajoutGroupe);
+
+    layoutMain->addWidget(membre, 0, 0, 2, 1);
+    layoutMain->addWidget(groupeBox, 0, 1);
+    layoutMain->addWidget(cours, 1, 1);
+
 
     deconnexionButton = new QPushButton("Deconnexion");
     QObject::connect(deconnexionButton, SIGNAL(clicked()), this, SLOT(deconnexion()));
-    layoutMain->addWidget(deconnexionButton, 1, 1);
+    layoutMain->addWidget(deconnexionButton, 2, 1);
 
     setLayout(layoutMain);
 
@@ -148,18 +143,16 @@ void administrationWindows::ajouterMembre(){
         sexePersonne = "Femme";
     }
 
-    if(typeMembre->currentText().toStdString() == "Eleve"){
+    if(eleveTest->checkState() == 0){
+        formateur *prof = new formateur(prenom->text().toStdString(), nom->text().toStdString(), dateNaissance->text().toStdString(), sexePersonne, adresseComplete, telephone->text().toStdString());
+        prof->affiche();
+    }
+    else{
         groupe *groupeA = new groupe("Groupe A");
         eleve *etudiant = new eleve(prenom->text().toStdString(), nom->text().toStdString(), dateNaissance->text().toStdString(), sexePersonne, adresseComplete, telephone->text().toStdString(), groupeA);
         etudiant->affiche();
     }
-    else if(typeMembre->currentText().toStdString() == "Formateur"){
-        formateur *prof = new formateur(prenom->text().toStdString(), nom->text().toStdString(), dateNaissance->text().toStdString(), sexePersonne, adresseComplete, telephone->text().toStdString());
-        prof->affiche();
-    }
-    else if(typeMembre->currentText().toStdString() == "Administrateur"){
 
-    }
     std::cout << "Membre ajouter" << std::endl;
 }
 
@@ -171,25 +164,22 @@ void administrationWindows::ajouterCours(){
     gr->affiche();
 }
 
+void administrationWindows::ajouterGroupe(){
+    groupe *newGroupe = new groupe(groupeIntitule->text().toStdString());
+    gr->affiche();
+}
 void administrationWindows::deconnexion(){
     display->setCurrentIndex(0);
 }
 
 void administrationWindows::afficheElementSupp(int element){
-    if(typeMembre->currentText().toStdString() == "Eleve"){
-        groupeCombo->setDisabled(false);
-        groupeLabel->setDisabled(false);
-        job->setDisabled(true);
-        formateurLabel->setDisabled(true);
-    }
-    else if(typeMembre->currentText().toStdString() == "Formateur"){
+    if(eleveTest->checkState() == 0){
         groupeCombo->setDisabled(true);
         groupeLabel->setDisabled(true);
-        job->setDisabled(false);
-        formateurLabel->setDisabled(false);
     }
-    else if(typeMembre->currentText().toStdString() == "Administrateur"){
-
+    else{
+        groupeCombo->setDisabled(false);
+        groupeLabel->setDisabled(false);
     }
 }
 

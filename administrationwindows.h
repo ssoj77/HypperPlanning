@@ -13,6 +13,7 @@
 #include <QStackedLayout>
 #include <QLineEdit>
 #include <QTableWidget>
+#include <QCheckBox>
 #include "eleve.h"
 #include "formateur.h"
 #include "cours.h"
@@ -37,13 +38,12 @@ class administrationWindows : public QWidget
         QLineEdit *codePostal;
         QLineEdit *ville;
         QLineEdit *telephone;
-        QComboBox *typeMembre;
+
         //Element supplmentaire par type
+        QCheckBox *eleveTest;
         QComboBox *groupeCombo;
         QLabel *groupeLabel;
-        QLabel *formateurLabel;
-        QLineEdit *job;
-        QLabel *labelJob;
+
         QPushButton *ajoutMembre;
 
         //Gestion des cours
@@ -54,7 +54,9 @@ class administrationWindows : public QWidget
         QTimeEdit *heureDebut;
         QPushButton *ajoutCours;
 
-        //Gestion des matières
+        //Gestion des groupes
+        QLineEdit *groupeIntitule;
+        QPushButton *ajoutGroupe;
 
 
         QStackedLayout *display;
@@ -66,6 +68,7 @@ class administrationWindows : public QWidget
     public slots:
         void ajouterMembre();
         void ajouterCours();
+        void ajouterGroupe();
         void deconnexion();
         void afficheElementSupp(int);
 };
