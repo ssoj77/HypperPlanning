@@ -10,3 +10,7 @@ void eleve::affiche(){
     cout << endl;
     user::affiche();
 }
+
+string eleve::getGroupe() {
+	return groupe_Planning->getGroupe();
+}

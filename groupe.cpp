@@ -15,3 +15,7 @@ void groupe::affiche(){
 void groupe::addCours(cours *new_Cours){
     planning.push_back(*new_Cours);
 }
+
+string groupe::getGroupe() {
+	return nom;
+}

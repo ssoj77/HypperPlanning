@@ -10,6 +10,7 @@ protected:
 public:
     eleve(string,string,string, string, string, string, groupe*);
     void affiche();
+    string getGroupe();
 
 };
 

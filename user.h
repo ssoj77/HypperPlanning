@@ -18,6 +18,12 @@ protected:
 public:
     user(string,string, string, string, string, string);
     void affiche();
+    string getNom();
+	string getPrenom();
+	string getDateNaissance();
+	string getSexe();
+	string getAdresse();
+	string getTelephone();
 };
 
 #endif // USER_H

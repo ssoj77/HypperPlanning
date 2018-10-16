@@ -4,7 +4,7 @@
 #include <vector>
 
 class groupe{
-    private:
+    protected:
         vector<cours> planning;
         string nom;
 
@@ -12,6 +12,7 @@ class groupe{
         groupe(string);
         void addCours(cours*);
         void affiche();
+        string getGroupe();
 };
 
 #endif // GROUPE_H

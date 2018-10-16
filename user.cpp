@@ -18,3 +18,26 @@ void user :: affiche(){
     cout << "	-" << telephone << endl << endl;
 }
 
+string user::getNom() {
+    return nom;
+}
+
+string user::getPrenom() {
+    return prenom;
+}
+
+string user::getDateNaissance() {
+    return date_Naissance;
+}
+
+string user::getSexe() {
+    return sexe;
+}
+
+string user::getAdresse() {
+    return adresse;
+}
+
+string user::getTelephone() {
+    return telephone;
+}
